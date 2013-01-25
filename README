@@ -1,0 +1,28 @@
+		SClass - Stravantian Classes
+
+	This repository is based on the work of Mark Langen (AKA Stravant/XlegoX).
+He has yet to publish this code under his GitHub account, but I am interested
+in it, so I'll be doing some work with it here.
+
+I've used this class system in the past, and it was quite nice.
+I really liked it. However, I do remember tinkering around and making changes,
+so I'll be keeping track of those here. Files like ./etc/example.lua 
+and ./etc/test.lua will not be updated as I modify things. They are simply
+there to document the past.
+
+You can find the original information concerning this software here:
+	The ROBLOX Forum Thread:
+		http://www.roblox.com/Forum/ShowPost.aspx?PostID=62638923
+		
+	Code:
+		http://codepad.org/nuB49Df4 
+	Sample Usage: 
+		http://codepad.org/CxWB3kh8 
+	Unit Tests:
+		http://codepad.org/PcFGNYqg
+		
+Other useful links:
+	Langen's GitHub page:
+		https://github.com/stravant
+	His ROBLOX page:
+		http://www.roblox.com/User.aspx?ID=80119
