@@ -1,4 +1,13 @@
+---
+-- Stravantian Classes
+-- A Class system by Stravant.
+--
+--@module SClass
 
+---
+-- Class System
+-- The primary function for defining a class
+-- @function [parent=#sclass] class
 function CreateSignal()
 	local this = {}
 
