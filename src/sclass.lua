@@ -306,7 +306,7 @@ function class(classname)
 
 		--put the static class stuff into the global env:
 		classDef.Create = constructor
-		getfenv(0)['Create'..classname] = constructor
+		setmetatable(classDef, {__call = constructor})
 		getfenv(0)[classname] = classDef
 	end
 end
