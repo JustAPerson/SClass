@@ -50,8 +50,8 @@ function class(classname)
 				return setmetatable({}, {
 					__call = function(tb, ...)
 						if #{...} > 0 then
-							error('Passing arguments to classdef.set'..fmtKey(key)..'() has no meaning, \
-							       see documentation for correct usage.', 2)
+							error('Passing arguments to classdef.set'..fmtKey(key)..'() has no meaning, ' ..
+							       'see documentation for correct usage.', 2)
 						end
 						if mSetters[key] then
 							error('Redefinition of setter for '..tostring(key), 2)
@@ -81,8 +81,8 @@ function class(classname)
 				return setmetatable({}, {
 					__call = function(tb, ...)
 						if #{...} > 0 then
-							error('Passing arguments to classdef.get'..fmtKey(key)..'() has no meaning, \
-							       see documentation for correct usage.', 2)
+							error('Passing arguments to classdef.get'..fmtKey(key)..'() has no meaning, ' ..
+							       'see documentation for correct usage.', 2)
 						end
 						if mGetters[key] then
 							error('Redefinition of getter for '..tostring(key), 2)
@@ -112,8 +112,8 @@ function class(classname)
 				return setmetatable({}, {
 					__call = function(tb, ...)
 						if #{...} > 0 then
-							error('Passing arguments to classdef.getset'..fmtKey(key)..'() has no meaning, \
-							       see documentation for correct usage.', 2)
+							error('Passing arguments to classdef.getset'..fmtKey(key)..'() has no meaning, ' ..
+							       'see documentation for correct usage.', 2)
 						end
 						if mSetters[key] then
 							error('Redefinition of setter for '..tostring(key), 2)
@@ -138,8 +138,8 @@ function class(classname)
 				return setmetatable({}, {
 					__call = function(tb, ...)
 						if #{...} > 0 then
-							error("Passing arguments to clasdef.event"..fmtKey(key).."() has no meaning, \
-							       see documentation for correct usage.", 2)
+							error("Passing arguments to clasdef.event"..fmtKey(key).."() has no meaning, " ..
+							       "see documentation for correct usage.", 2)
 						end
 						if type(key) ~= 'string' then
 							error("Can't create event `"..tostring(key).."` event names must be strings", 2)
