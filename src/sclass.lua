@@ -21,9 +21,6 @@ function class(classname)
 	local mGetters = {__ClassName = true}
 	local mSetters = {}
 
-	--table of events to automatically create
-	local mEvents = {}
-
 	-- table of metamethods
 	local mMetamethods = {}
 
@@ -135,37 +132,6 @@ function class(classname)
 			end;
 		})
 
-		--the proxy object returned by `def.event`
-		local eventProxy = setmetatable({}, {
-			__index = function(tb, key)
-				return setmetatable({}, {
-					__call = function(tb, ...)
-						if #{...} > 0 then
-							error("Passing arguments to clasdef.event"..fmtKey(key).."() has no meaning, " ..
-							       "see documentation for correct usage.", 2)
-						end
-						if type(key) ~= 'string' then
-							error("Can't create event `"..tostring(key).."` event names must be strings", 2)
-						end
-						if mEvents[key] then
-							error("Redefinition of event `"..key.."`", 2)
-						end
-						mEvents[key] = true
-						mGetters[key] = true
-					end;
-					__index = function()
-						error("classdef.event"..fmtKey(key).." can only be called, not indexed", 2)
-					end;
-					__newindex = function()
-						error("classdef.event"..fmtKey(key).." can only be called, not assigned to", 2)
-					end;
-				})
-			end;
-			__newindex = function(tb, key, val)
-				error("Can't set classdef.event"..fmtKey(key).." = "..tostring(val), 2)
-			end;
-		})
-
 		--the proxy object returned by `classdef.static`
 		local staticProxy = setmetatable({}, {
 			__index = classDef,
@@ -208,7 +174,6 @@ function class(classname)
 		mainImplProxy.get = getProxy
 		mainImplProxy.set = setProxy
 		mainImplProxy.getset = getsetProxy
-		mainImplProxy.event = eventProxy
 		mainImplProxy.private = privateProxy
 		mainImplProxy.static = staticProxy
 		mainImplProxy.meta = metaProxy
@@ -316,11 +281,6 @@ function class(classname)
 			--and make the external table
 			local externalThis = {__internal = internalThis}
 			setmetatable(externalThis, externalMT)
-
-			--and add signals to the internal object
-			for eventName, _ in pairs(mEvents) do
-				internalThis[eventName] = CreateSignal()
-			end
 
 			--call the user-constructor
 			if mAllMethods.Create then
