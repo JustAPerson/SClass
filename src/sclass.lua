@@ -24,6 +24,9 @@ function class(classname)
 	--table of events to automatically create
 	local mEvents = {}
 
+	-- table of metamethods
+	local mMetamethods = {}
+
 	--
 	--if key is a string, return '.'..key, otherwise return '['..tostring(key)..']''
 	--this is used for nice error formatting in handling of index/newindex
@@ -183,6 +186,23 @@ function class(classname)
 			end;
 		})
 
+		--the meta proxy, returned by `classdef.meta`
+		local metaProxy = setmetatable({}, {
+			__newindex = function(tb, key, val)
+				if type(key) == 'string' and type(val) == 'function' then
+					if key == '__index' or key == '__newindex' then
+						error("Can't set classdef.meta" .. fmtKey(key))
+					end
+					mMetamethods[key] = val
+				else
+					error("Can't set classdef.meta"..fmtKey(key).." = "..tostring(val), 2)
+				end
+			end;
+			__index = function(tb, key)
+				error("Can't get classdef.meta"..fmtKey(key), 2)
+			end;
+		})
+
 		--the main proxy, `def` itself
 		local mainImplProxy = {}
 		mainImplProxy.get = getProxy
@@ -191,6 +211,7 @@ function class(classname)
 		mainImplProxy.event = eventProxy
 		mainImplProxy.private = privateProxy
 		mainImplProxy.static = staticProxy
+		mainImplProxy.meta = metaProxy
 		setmetatable(mainImplProxy, {
 			__index = function(tb, key)
 				--note, we do not have to check for and return the other keys such as get/set/getset here, since
@@ -277,6 +298,12 @@ function class(classname)
 				end
 			end;
 		}
+		for k, f in pairs(mMetamethods) do
+			internalMT[k] = f
+			externalMT[k] = function(obj, ...)
+				return f(rawget(obj, '__internal'), ...)
+			end
+		end
 
 		--now, generate the constructor function
 		local constructor = function(...)
